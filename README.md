@@ -1,5 +1,7 @@
 # Non Deterministic Pushdown Automata Simulator
 
+## Why do we use automata in Computer Science
+
 In Computer Science we try to give answers to the following questions:
 
 - What problems can we solve with an algorithm?
@@ -7,21 +9,24 @@ In Computer Science we try to give answers to the following questions:
 - Does the designed algorithm really solve the problem? Is there any error?
 - How efficient is the algorithm in terms of time consumption and space needed?
 
-In order to help with the study of algorithms we use mathematical models of computation to represent them.
-These models are given an input string and they can recognize it as part of the language that they represent or not. 
+Our first concern is to know if there exist an algorithm to solve a certain problem, this is because if the 
+answer is negative we can't do anything else. In order to help with that, we use mathematical models of computation 
+to represent algorithms: if we can get a model to solve a problem (being the problem defined in a formal language),
+then we can be sure that there must exist an algorithm to solve the problem.
 
-Lets say, for example, that our problem is determining whether an input string is made of a number of ones 
+Lets say, for example, that our problem is determining whether a binary input string is made of a number of ones 
 followed by the same number of zeroes or not. We can define the language made by all those strings as
 
-_L={1<sup>n</sup>0<sup>n</sup> / n > 0}_.
+_L={1<sup>n</sup>0<sup>n</sup> / n > 0}_
  
-We can now solve the problem by determining whether an input string is part of the language or not. For that we can
-use a mathematical model to represent that language, a Pushdown Automaton for example. And how that model is
-made represents the algorithm used to solve the problem. 
+We can now solve the problem by determining whether an input string is part of the language or not. And we can do that
+by using mathematical models like Pushdown Automata or Context-Free Grammars.
 
-In case of more complex languages we'll need to use more complex models to represent them. Or, in case that our
-problem is not a decision problem we'll need an output string, Turing Machines can transform the input and thus
-have an output associated with input strings. Turing Machines are simple models but can represent any computable algorithm.
+In case that our problem is not a decision problem (with "yes" or "no" answer) we'll need an output string, 
+Turing Machines can transform the input and thus have an output associated with input strings. Turing Machines 
+are models that can represent any computable algorithm.
+
+## Pushdown Automata
 
 A Pushdown Automaton (PDA) is a model that represent Context-Free languages, these languages are less rich than the 
 ones that Turing Machine represents but they are widely used, for example for defining programming languages.
