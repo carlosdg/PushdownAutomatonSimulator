@@ -11,14 +11,17 @@ In order to help with the study of algorithms we use mathematical models of comp
 These models are given an input string and they can recognize it as part of the language that they represent or not. 
 
 Lets say, for example, that our problem is determining whether an input string is made of a number of ones 
-followed by the same number of zeroes or not. We can define the language as _L={1<sup>n</sup>0<sup>n</sup> / n > 0}_. 
+followed by the same number of zeroes or not. We can define the language made by all those strings as
+
+_L={1<sup>n</sup>0<sup>n</sup> / n > 0}_.
+ 
 We can now solve the problem by determining whether an input string is part of the language or not. For that we can
-use a mathematical model that represents the language, a Pushdown Automaton for example. And how that model is
+use a mathematical model to represent that language, a Pushdown Automaton for example. And how that model is
 made represents the algorithm used to solve the problem. 
 
 In case of more complex languages we'll need to use more complex models to represent them. Or, in case that our
-problem is not a decision problem we'll need an output string, Turing Machines can transform the input, they are
-a very simple model but can represent any computable algorithm.
+problem is not a decision problem we'll need an output string, Turing Machines can transform the input and thus
+have an output associated with input strings. Turing Machines are simple models but can represent any computable algorithm.
 
 A Pushdown Automaton (PDA) is a model that represent Context-Free languages, these languages are less rich than the 
 ones that Turing Machine represents but they are widely used, for example for defining programming languages.
