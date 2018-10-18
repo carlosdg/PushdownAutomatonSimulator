@@ -1,4 +1,4 @@
-# Non Deterministic Pushdown Automata Simulator
+# Non Deterministic Pushdown Automaton Simulator
 
 ## Why do we use automata in Computer Science
 
@@ -38,8 +38,61 @@ PDA are formally described by a 7-uple (Q, Σ, Γ, s, Z, δ, F):
 - __Γ__ is called the stack alphabet. It is the finite set of symbols that the stack can have in it.
 - __s__ is the starting state of the automaton (_s ∈ Q_).
 - __Z__ is the symbol at the top of the stack at the start (_Z ∈ Γ_).
-- __δ__ is the transition function. _δ: Q x (Σ ⋃ ε) x Γ → P(Q x Γ<sup>*</sup>)_. Given the current state, taking or not 
+- __δ__ is the transition function. _δ: Q x (Σ ⋃ {ε}) x Γ → P(Q x Γ<sup>*</sup>)_. Given the current state, taking or not 
 the current symbol of the input tape and taking symbol at the top of the stack, the transition function returns
 the set of possible states and symbols to push to the stack (note that a single stack symbol must be pop every
 time but 0 or more can be pushed).
 - __F__ is the set of accepting states (_F ⊆ Q_).
+
+### Computation process by example
+
+Lets say that we have the following PDA:
+
+- __Q__ = {p, q}
+- __Σ__ = {0, 1}
+- __Γ__ = {S, A}
+- __s__ = p
+- __Z__ = S
+- __F__ = {}
+- __δ__: (defined by the following graph)
+
+![Graph of transition function, it is explained below](docs/assets/OnesFollowedByZeroesPDATransitionFunctionGraph.png)
+
+From p to p there are two transitions when reading a `1` from the input tape, one that pops S from the stack 
+to bootstrap the automaton and the other one pops an A and pushes two A's. This way, when we finish reading the ones
+from the input string and go to read the zeroes, we'll have `n` number of A's in the stack. Then we pop the A's when 
+reading the zeroes to know when we have seen the same number of zeroes than ones.
+
+Now, this type of PDA doesn't have accepting states, so it is finished when the stack is emptied. In case that we have
+read the same number of ones than zeroes, and the input string doesn't have more symbols to be read, we would have read
+all the input string and the stack would be empty so the automaton accepts the input string. If there are some symbols
+to be read when the stack goes empty then the input is rejected.
+
+In this kind of PDA, if we are on a state and we cannot perform any transition then we reject the input string. In this
+automaton happens, for example, when the input string starts with zero.
+
+To show how automata behave, we need to define how to represent all the information of an automaton at some time step.
+We just need to show at each time step the current state of the automaton, the input tape (this is where the input 
+string is placed and where the automaton "consumes" its symbols) and the stack elements. We do that with a 3-uple and
+represent a move from one configuration to another with `⊢`.
+
+Now, let see how the automaton behaves with three example inputs:
+
+- Input string is `1100`
+
+    (p, 1100, S) ⊢ (p, 100, A) ⊢ (p, 00, AA) ⊢ (p, 0, A) ⊢ (p, , )
+    
+    After all the automaton moves it ends up with the stack and input tape empty so it accepts the input string `1100` 
+
+- Input string is `01`
+
+    (p, 01, S)
+    
+    There is no transition applicable being in state `p`, reading `0` from the input tape and having `S` at the top of
+    the stack. So the input is rejected
+
+- Input string is `101`
+
+    (p, 101, S) ⊢ (p, 01, A) ⊢ (p, 1, )
+    
+    When the stack goes empty the input tape is not so the input is rejected 
