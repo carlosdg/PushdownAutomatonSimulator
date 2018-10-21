@@ -30,6 +30,14 @@ public class PdaConfigurationBuilder {
 	}
 
 	/**
+	 * Add a list of state names to the list of states
+	 */
+	public PdaConfigurationBuilder addStateNameList(List<String> newNameList) {
+		stateNames.addAll(newNameList);
+		return this;
+	}
+
+	/**
 	 * Add an input alphabet symbol name
 	 */
 	public PdaConfigurationBuilder addInputAlphabetSymbolName(String newName) {
@@ -38,10 +46,26 @@ public class PdaConfigurationBuilder {
 	}
 
 	/**
+	 * Add a list of input alphabet symbol names
+	 */
+	public PdaConfigurationBuilder addInputAlphabetSymbolNameList(List<String> newList) {
+		inputAlphabetSymbolNames.addAll(newList);
+		return this;
+	}
+
+	/**
 	 * Add a stack alphabet symbol name
 	 */
 	public PdaConfigurationBuilder addStackAlphabetSymbolName(String newName) {
 		stackAlphabetSymbolNames.add(newName);
+		return this;
+	}
+
+	/**
+	 * Add a list of stack alphabet symbol names
+	 */
+	public PdaConfigurationBuilder addStackAlphabetSymbolNameList(List<String> newList) {
+		stackAlphabetSymbolNames.addAll(newList);
 		return this;
 	}
 
@@ -66,6 +90,14 @@ public class PdaConfigurationBuilder {
 	 */
 	public PdaConfigurationBuilder addAcceptingStateName(String newName) {
 		acceptingStateNames.add(newName);
+		return this;
+	}
+
+	/**
+	 * Add a list of accepting state names
+	 */
+	public PdaConfigurationBuilder addAcceptingStateNameList(List<String> newList) {
+		acceptingStateNames.addAll(newList);
 		return this;
 	}
 
