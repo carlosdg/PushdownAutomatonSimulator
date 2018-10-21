@@ -3,17 +3,13 @@ package me.carlosdg.PushdownAutomataSimulator.pda;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.lang.model.element.Element;
-
-import me.carlosdg.PushdownAutomataSimulator.utils.Checks;
-
 /**
  * PdaConfiguration builder. Because PdaConfiguration requires too many
  * arguments to pass to the constructor this builder aims to make the
  * construction of PdaConfiguration instances easier to code. This is done by
  * providing a fluid interface hiding the construction of the objects needed for
  * the PdaConfiguration construction
- * 
+ *
  * @author Carlos Domínguez García
  */
 public class PdaConfigurationBuilder {
@@ -29,7 +25,7 @@ public class PdaConfigurationBuilder {
 	 * Add a state name to the list of states
 	 */
 	public PdaConfigurationBuilder addStateName(String newName) {
-		this.stateNames.add(newName);
+		stateNames.add(newName);
 		return this;
 	}
 
@@ -37,7 +33,7 @@ public class PdaConfigurationBuilder {
 	 * Add an input alphabet symbol name
 	 */
 	public PdaConfigurationBuilder addInputAlphabetSymbolName(String newName) {
-		this.inputAlphabetSymbolNames.add(newName);
+		inputAlphabetSymbolNames.add(newName);
 		return this;
 	}
 
@@ -45,7 +41,7 @@ public class PdaConfigurationBuilder {
 	 * Add a stack alphabet symbol name
 	 */
 	public PdaConfigurationBuilder addStackAlphabetSymbolName(String newName) {
-		this.stackAlphabetSymbolNames.add(newName);
+		stackAlphabetSymbolNames.add(newName);
 		return this;
 	}
 
@@ -53,7 +49,7 @@ public class PdaConfigurationBuilder {
 	 * Set the starting state name
 	 */
 	public PdaConfigurationBuilder setStartingStateName(String newName) {
-		this.startingStateName = newName;
+		startingStateName = newName;
 		return this;
 	}
 
@@ -61,7 +57,7 @@ public class PdaConfigurationBuilder {
 	 * Set the starting stack top symbol name
 	 */
 	public PdaConfigurationBuilder setStartingStackTopSymbolName(String newName) {
-		this.startingStackTopSymbolName = newName;
+		startingStackTopSymbolName = newName;
 		return this;
 	}
 
@@ -69,7 +65,7 @@ public class PdaConfigurationBuilder {
 	 * Add an accepting state name
 	 */
 	public PdaConfigurationBuilder addAcceptingStateName(String newName) {
-		this.acceptingStateNames.add(newName);
+		acceptingStateNames.add(newName);
 		return this;
 	}
 
@@ -77,7 +73,7 @@ public class PdaConfigurationBuilder {
 	 * Add a transition
 	 */
 	public PdaConfigurationBuilder addTransition(List<String> newTransition) {
-		this.transitions.add(newTransition);
+		transitions.add(newTransition);
 		return this;
 	}
 

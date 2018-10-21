@@ -14,14 +14,14 @@ public class PdaConfigurationBuilderTest {
 
 	@Before
 	public void init() {
-		this.uut = new PdaConfigurationBuilder();
+		uut = new PdaConfigurationBuilder();
 	}
 
 	@Test
 	public void shouldHaveOnlyTheStateWhenBuiltFromAState() {
-		this.uut.addStateName("q0");
-		PdaConfiguration config = this.uut.build();
-		
+		uut.addStateName("q0");
+		PdaConfiguration config = uut.build();
+
 		assertThat(config.getStateNames()).containsOnly("q0");
 		assertThat(config.getAcceptingStateNames()).isEmpty();
 		assertThat(config.getTransitions()).isEmpty();
@@ -30,13 +30,13 @@ public class PdaConfigurationBuilderTest {
 		assertThat(config.getStartingStackTopSymbolName()).isEmpty();
 		assertThat(config.getStartingStateName()).isEmpty();
 	}
-	
+
 	@Test
 	public void shouldHaveOnlyTheStateWhenBuiltFromStates() {
-		this.uut.addStateName("q0");
-		this.uut.addStateName("q1");
-		PdaConfiguration config = this.uut.build();
-		
+		uut.addStateName("q0");
+		uut.addStateName("q1");
+		PdaConfiguration config = uut.build();
+
 		assertThat(config.getStateNames()).containsOnly("q0", "q1");
 		assertThat(config.getAcceptingStateNames()).isEmpty();
 		assertThat(config.getTransitions()).isEmpty();
@@ -45,30 +45,36 @@ public class PdaConfigurationBuilderTest {
 		assertThat(config.getStartingStackTopSymbolName()).isEmpty();
 		assertThat(config.getStartingStateName()).isEmpty();
 	}
-	
+
 	@Test
 	public void shouldThrowWhenBuildingWithSomeNullState() {
-		this.uut.addStateName(null);
-		assertThatIllegalArgumentException().isThrownBy(() -> { this.uut.build(); });
+		uut.addStateName(null);
+		assertThatIllegalArgumentException().isThrownBy(() -> {
+			uut.build();
+		});
 	}
-	
+
 	@Test
 	public void shouldThrowWhenBuildingWithSomeNullTransition() {
-		this.uut.addTransition(null);
-		assertThatIllegalArgumentException().isThrownBy(() -> { this.uut.build(); });
+		uut.addTransition(null);
+		assertThatIllegalArgumentException().isThrownBy(() -> {
+			uut.build();
+		});
 	}
-	
+
 	@Test
 	public void shouldThrowWhenBuildingWithSomeNullTransitionElement() {
-		this.uut.addTransition(Arrays.asList("q0", null, "S", "q1", "A", "B"));
-		assertThatIllegalArgumentException().isThrownBy(() -> { this.uut.build(); });
+		uut.addTransition(Arrays.asList("q0", null, "S", "q1", "A", "B"));
+		assertThatIllegalArgumentException().isThrownBy(() -> {
+			uut.build();
+		});
 	}
-	
+
 	@Test
 	public void shouldBuildWithOneTransition() {
 		List<String> transition = Arrays.asList("q0", "a", "S", "q1", "A", "B");
-		this.uut.addTransition(transition);
-		PdaConfiguration config = this.uut.build();
+		uut.addTransition(transition);
+		PdaConfiguration config = uut.build();
 
 		assertThat(config.getTransitions()).containsOnly(transition);
 	}

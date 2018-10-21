@@ -7,14 +7,11 @@ import me.carlosdg.PushdownAutomataSimulator.utils.Checks;
 /**
  * PdaConfiguration is a data structure that represents the raw definition of a
  * Pushdown Automaton. It is used as an intermediary data structure between PDA
- * configuration input readers and the PdaSimulator class.
- * 
- * This data structure merely represents the content of the PDA configuration,
- * it does not implement any logic except checking that all the parameters are
- * not null.
- * 
- * @author Carlos Domínguez García
+ * configuration input readers and the PdaSimulator class. This data structure
+ * merely represents the content of the PDA configuration, it does not implement
+ * any logic except checking that all the parameters are not null.
  *
+ * @author Carlos Domínguez García
  */
 public class PdaConfiguration {
 	private List<String> stateNames;
@@ -29,7 +26,7 @@ public class PdaConfiguration {
 	 * Construct a PdaConfiguration instance. Note that this object does not
 	 * implement any logic, it only acts as a dummy container to represent the raw
 	 * configuration read from the user.
-	 * 
+	 *
 	 * @param stateNames                 List of state names
 	 * @param inputAlphabetSymbolNames   List of input alphabet symbol names
 	 * @param stackAlphabetSymbolNames   List of stack alphabet symbol names
@@ -37,7 +34,6 @@ public class PdaConfiguration {
 	 * @param startingStackTopSymbolName Starting stack alphabet symbol name
 	 * @param acceptingStateNames        List of accepting state names
 	 * @param transitions                List of transitions
-	 * 
 	 * @throws IllegalArgumentException If there is any null value
 	 */
 	public PdaConfiguration(List<String> stateNames, List<String> inputAlphabetSymbolNames,

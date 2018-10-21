@@ -4,16 +4,15 @@ import java.util.Collection;
 
 /**
  * Helper methods
- * 
- * @author Carlos Domínguez García
  *
+ * @author Carlos Domínguez García
  */
 public class Checks {
 
 	/**
 	 * Helper method that throws an IllegalArgumentException if the given object is
 	 * null
-	 * 
+	 *
 	 * @param toCheck Object to check if it is null
 	 * @param message Message to pass to the exception if the object is null
 	 * @throws IllegalArgumentException If the given object is null
@@ -28,7 +27,7 @@ public class Checks {
 	 * Helper method that throws an IllegalArgumentException if the given collection
 	 * or any of its elements is null. This check recurses down to children
 	 * containers if any
-	 * 
+	 *
 	 * @param toCheck Collection to check if itself or any of its elements is null
 	 * @param message Message to pass to the exception if the check turns to be null
 	 * @throws IllegalArgumentException If the given collection is null itself or
