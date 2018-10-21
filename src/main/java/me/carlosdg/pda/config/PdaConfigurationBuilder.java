@@ -1,4 +1,4 @@
-package me.carlosdg.PushdownAutomataSimulator.pda;
+package me.carlosdg.pda.config;
 
 import java.util.ArrayList;
 import java.util.List;

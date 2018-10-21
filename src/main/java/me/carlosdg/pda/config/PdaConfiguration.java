@@ -1,8 +1,8 @@
-package me.carlosdg.PushdownAutomataSimulator.pda;
+package me.carlosdg.pda.config;
 
 import java.util.List;
 
-import me.carlosdg.PushdownAutomataSimulator.utils.Checks;
+import me.carlosdg.pda.utils.Checks;
 
 /**
  * PdaConfiguration is a data structure that represents the raw definition of a

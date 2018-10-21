@@ -1,4 +1,4 @@
-package me.carlosdg.PushdownAutomataSimulator.pda;
+package me.carlosdg.pda.config;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import me.carlosdg.pda.config.PdaConfiguration;
+import me.carlosdg.pda.config.PdaConfigurationBuilder;
 
 public class PdaConfigurationBuilderTest {
 

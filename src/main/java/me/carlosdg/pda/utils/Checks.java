@@ -1,4 +1,4 @@
-package me.carlosdg.PushdownAutomataSimulator.utils;
+package me.carlosdg.pda.utils;
 
 import java.util.Collection;
 

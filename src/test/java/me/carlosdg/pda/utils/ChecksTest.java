@@ -1,4 +1,4 @@
-package me.carlosdg.PushdownAutomataSimulator.utils;
+package me.carlosdg.pda.utils;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.assertTrue;
@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Test;
+
+import me.carlosdg.pda.utils.Checks;
 
 public class ChecksTest {
 
