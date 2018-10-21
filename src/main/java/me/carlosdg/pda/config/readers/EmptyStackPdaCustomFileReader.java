@@ -15,18 +15,18 @@ import me.carlosdg.pda.config.PdaConfigurationBuilder;
  *
  * <pre>
  * # Comments
- * p0 p1 q0 q2		# State names
- * a b c d e f		# Input alphabet symbol names
- * Q W E R T Y		# Stack alphabet symbol names
+ * p0 p1 q0 q2		# States
+ * a b c d e f		# Input alphabet symbols
+ * Q W E R T Y		# Stack alphabet symbols
  * p0				# Initial state
- * Q				# Initial stack top
+ * Q				# Initial stack top symbol
  * p0 a Q p1 W T	# Transition
  * ...				# More transitions
  * </pre>
  *
  * @author Carlos Domínguez García
  */
-public class PdaCustomFileReader implements PdaReader {
+public class EmptyStackPdaCustomFileReader implements PdaReader {
 	/** Regular expression for single line comment delimiter */
 	static private String SINGLE_LINE_COMMENT_DELIMITER_REGEX = "#";
 	/** Regular expression for token delimiter */
@@ -46,7 +46,7 @@ public class PdaCustomFileReader implements PdaReader {
 	 * @throws IOException If the given file path is not found or there is an error
 	 *                     reading the file
 	 */
-	public PdaCustomFileReader(String filePath) throws IOException {
+	public EmptyStackPdaCustomFileReader(String filePath) throws IOException {
 		fileReader = new Scanner(new BufferedReader(new FileReader(filePath)));
 		configBuilder = new PdaConfigurationBuilder();
 
