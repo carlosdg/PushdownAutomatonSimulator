@@ -1,4 +1,4 @@
-package me.carlosdg.pda.alphabets.exceptions;
+package me.carlosdg.pda.sets.exceptions;
 
 /**
  * Exception for when a given string doesn't represent any symbol of the target
@@ -6,7 +6,7 @@ package me.carlosdg.pda.alphabets.exceptions;
  *
  * @author Carlos Domínguez García
  */
-public class SymbolNotFoundInAlphabetException extends Exception {
+public class SymbolNotFoundInSetException extends Exception {
 	private static final long serialVersionUID = 7250455007229293610L;
 
 	/**
@@ -15,7 +15,7 @@ public class SymbolNotFoundInAlphabetException extends Exception {
 	 * @param stringReprOfNotFoundSymbol String representation of the symbol that
 	 *                                   wasn't found in the alphabet
 	 */
-	public SymbolNotFoundInAlphabetException(String stringReprOfNotFoundSymbol) {
+	public SymbolNotFoundInSetException(String stringReprOfNotFoundSymbol) {
 		super("AlphabetSymbol in alphabet not found: " + stringReprOfNotFoundSymbol);
 	}
 }

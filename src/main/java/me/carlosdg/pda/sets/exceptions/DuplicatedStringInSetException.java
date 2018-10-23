@@ -1,4 +1,4 @@
-package me.carlosdg.pda.alphabets.exceptions;
+package me.carlosdg.pda.sets.exceptions;
 
 /**
  * Exception for when a duplicated string is found wanting to be part of an
@@ -6,7 +6,7 @@ package me.carlosdg.pda.alphabets.exceptions;
  *
  * @author Carlos Domínguez García
  */
-public class DuplicatedStringInAlphabetException extends Exception {
+public class DuplicatedStringInSetException extends Exception {
 	private static final long serialVersionUID = -6985536630123145670L;
 
 	/**
@@ -14,7 +14,7 @@ public class DuplicatedStringInAlphabetException extends Exception {
 	 *
 	 * @param duplicatedString Duplicated string found that caused the exception
 	 */
-	public DuplicatedStringInAlphabetException(String duplicatedString) {
+	public DuplicatedStringInSetException(String duplicatedString) {
 		super("Found at least the following duplicated string in alphabet: " + duplicatedString);
 	}
 }

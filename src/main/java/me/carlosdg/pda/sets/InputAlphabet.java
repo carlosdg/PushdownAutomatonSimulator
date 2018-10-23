@@ -1,9 +1,9 @@
-package me.carlosdg.pda.alphabets;
+package me.carlosdg.pda.sets;
 
 import java.util.Collection;
 
-import me.carlosdg.pda.alphabets.exceptions.DuplicatedStringInAlphabetException;
 import me.carlosdg.pda.symbols.InputAlphabetSymbol;
+import me.carlosdg.pda.sets.exceptions.DuplicatedStringInSetException;
 import me.carlosdg.pda.symbols.AlphabetSymbol;
 
 /**
@@ -11,9 +11,9 @@ import me.carlosdg.pda.symbols.AlphabetSymbol;
  *
  * @author Carlos Domínguez García
  */
-public class InputAlphabet extends Alphabet {
+public class InputAlphabet extends SymbolSet<AlphabetSymbol> {
 
-	public InputAlphabet(Collection<String> symbolRepresentations) throws DuplicatedStringInAlphabetException {
+	public InputAlphabet(Collection<String> symbolRepresentations) throws DuplicatedStringInSetException {
 		super(symbolRepresentations);
 	}
 
