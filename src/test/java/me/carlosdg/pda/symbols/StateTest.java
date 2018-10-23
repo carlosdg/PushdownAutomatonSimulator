@@ -34,4 +34,32 @@ public class StateTest {
 		assertThat(s0).isNotEqualTo(s1);
 	}
 
+	@Test
+	public void shouldBeDifferentToAInputAlphabetSymbolWithTheSameStringRepresentation() {
+		Symbol s0 = new State("p");
+		Symbol s1 = new InputAlphabetSymbol("p");
+		assertThat(s0).isNotEqualTo(s1);
+	}
+
+	@Test
+	public void shouldBeDifferentToAStackAlphabetSymbolWithTheSameStringRepresentation() {
+		Symbol s0 = new State("p");
+		Symbol s1 = new StackAlphabetSymbol("p");
+		assertThat(s0).isNotEqualTo(s1);
+	}
+
+	@Test
+	public void shouldBeDifferentToAInputAlphabetSymbolWithDifferentStringRepresentation() {
+		Symbol s0 = new State("p");
+		Symbol s1 = new InputAlphabetSymbol("q");
+		assertThat(s0).isNotEqualTo(s1);
+	}
+
+	@Test
+	public void shouldBeDifferentToAStackAlphabetSymbolWithDifferentStringRepresentation() {
+		Symbol s0 = new State("p");
+		Symbol s1 = new StackAlphabetSymbol("q");
+		assertThat(s0).isNotEqualTo(s1);
+	}
+
 }
