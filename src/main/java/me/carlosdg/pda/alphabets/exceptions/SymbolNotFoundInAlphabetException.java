@@ -16,6 +16,6 @@ public class SymbolNotFoundInAlphabetException extends Exception {
 	 *                                   wasn't found in the alphabet
 	 */
 	public SymbolNotFoundInAlphabetException(String stringReprOfNotFoundSymbol) {
-		super("Symbol in alphabet not found: " + stringReprOfNotFoundSymbol);
+		super("AlphabetSymbol in alphabet not found: " + stringReprOfNotFoundSymbol);
 	}
 }

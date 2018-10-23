@@ -1,13 +1,13 @@
 package me.carlosdg.pda.symbols;
 
 /**
- * Class to represent input symbols
+ * Class to represent stack symbols
  *
  * @author Carlos Domínguez García
  */
-public class InputSymbol extends Symbol {
-	/** @see me.carlosdg.pda.symbols.Symbol */
-	public InputSymbol(String representation) {
+public class StackAlphabetSymbol extends AlphabetSymbol {
+	/** @see me.carlosdg.pda.symbols.AlphabetSymbol */
+	public StackAlphabetSymbol(String representation) {
 		super(representation);
 	}
 
@@ -28,6 +28,6 @@ public class InputSymbol extends Symbol {
 			return false;
 		}
 
-		return ((InputSymbol) obj).getRepresentation().equals(getRepresentation());
+		return ((StackAlphabetSymbol) obj).getRepresentation().equals(getRepresentation());
 	}
 }

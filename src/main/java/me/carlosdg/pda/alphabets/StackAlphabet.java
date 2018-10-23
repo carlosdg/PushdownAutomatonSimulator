@@ -3,8 +3,8 @@ package me.carlosdg.pda.alphabets;
 import java.util.Collection;
 
 import me.carlosdg.pda.alphabets.exceptions.DuplicatedStringInAlphabetException;
-import me.carlosdg.pda.symbols.StackSymbol;
-import me.carlosdg.pda.symbols.Symbol;
+import me.carlosdg.pda.symbols.StackAlphabetSymbol;
+import me.carlosdg.pda.symbols.AlphabetSymbol;
 
 /**
  * Stack alphabet class
@@ -18,8 +18,8 @@ public class StackAlphabet extends Alphabet {
 	}
 
 	@Override
-	protected Symbol newSymbol(String representation) {
-		return new StackSymbol(representation);
+	protected AlphabetSymbol newSymbol(String representation) {
+		return new StackAlphabetSymbol(representation);
 	}
 
 }

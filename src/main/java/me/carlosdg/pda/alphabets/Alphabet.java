@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import me.carlosdg.pda.alphabets.exceptions.DuplicatedStringInAlphabetException;
 import me.carlosdg.pda.alphabets.exceptions.SymbolNotFoundInAlphabetException;
-import me.carlosdg.pda.symbols.Symbol;
+import me.carlosdg.pda.symbols.AlphabetSymbol;
 
 /**
  * Base class for alphabets. It is used as a set of symbols and a verifier to
@@ -15,7 +15,7 @@ import me.carlosdg.pda.symbols.Symbol;
  */
 abstract class Alphabet {
 	/** Map from string representation to symbols represented by the string */
-	private Map<String, Symbol> alphabet = new HashMap<>();
+	private Map<String, AlphabetSymbol> alphabet = new HashMap<>();
 
 	/**
 	 * Creates an alphabet from the given collection of strings that represent
@@ -39,13 +39,13 @@ abstract class Alphabet {
 	 * alphabet or throws otherwise
 	 *
 	 * @param repr String representation of the symbol to get
-	 * @return Symbol object represented by the given string
+	 * @return AlphabetSymbol object represented by the given string
 	 * @throws SymbolNotFoundInAlphabetException If the given string doesn't
 	 *                                           represent any symbol in this
 	 *                                           alphabet
 	 */
-	public Symbol getSymbol(String repr) throws SymbolNotFoundInAlphabetException {
-		Symbol symbol = alphabet.get(repr);
+	public AlphabetSymbol getSymbol(String repr) throws SymbolNotFoundInAlphabetException {
+		AlphabetSymbol symbol = alphabet.get(repr);
 		if (symbol == null) {
 			throw new SymbolNotFoundInAlphabetException(repr);
 		}
@@ -65,9 +65,9 @@ abstract class Alphabet {
 	// * symbol that belongs to this
 	// * alphabet
 	// */
-	// public Optional<Symbol> parseRepresentation(String repr) throws
+	// public Optional<AlphabetSymbol> parseRepresentation(String repr) throws
 	// SymbolNotFoundInAlphabetException {
-	// if (repr.equals(Symbol.EMPTY_STRING_REPR)) {
+	// if (repr.equals(AlphabetSymbol.EMPTY_STRING_REPR)) {
 	// return Optional.empty();
 	// }
 	//
@@ -75,6 +75,6 @@ abstract class Alphabet {
 	// }
 
 	/** Returns an instance of the symbols of this alphabet */
-	abstract protected Symbol newSymbol(String representation);
+	abstract protected AlphabetSymbol newSymbol(String representation);
 
 }

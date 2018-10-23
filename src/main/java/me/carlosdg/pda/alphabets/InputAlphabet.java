@@ -3,8 +3,8 @@ package me.carlosdg.pda.alphabets;
 import java.util.Collection;
 
 import me.carlosdg.pda.alphabets.exceptions.DuplicatedStringInAlphabetException;
-import me.carlosdg.pda.symbols.InputSymbol;
-import me.carlosdg.pda.symbols.Symbol;
+import me.carlosdg.pda.symbols.InputAlphabetSymbol;
+import me.carlosdg.pda.symbols.AlphabetSymbol;
 
 /**
  * Input alphabet class
@@ -18,8 +18,8 @@ public class InputAlphabet extends Alphabet {
 	}
 
 	@Override
-	protected Symbol newSymbol(String representation) {
-		return new InputSymbol(representation);
+	protected AlphabetSymbol newSymbol(String representation) {
+		return new InputAlphabetSymbol(representation);
 	}
 
 }
