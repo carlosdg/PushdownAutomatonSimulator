@@ -1,5 +1,6 @@
 package me.carlosdg.pda.simulator.transition_function;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class TransitionFunction {
 	 * (the map) returns the next state and 0 or more stack symbols to push to the
 	 * stack
 	 */
-	Map<TransitionFunctionKey, Set<StateStackSymbolsPair>> map;
+	Map<TransitionFunctionKey, Set<StateStackSymbolsPair>> map = new HashMap<>();
 
 	/**
 	 * Returns the value of the transition function associated to the given input
