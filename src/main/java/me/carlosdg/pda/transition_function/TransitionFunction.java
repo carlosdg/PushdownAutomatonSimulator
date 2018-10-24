@@ -42,13 +42,12 @@ public class TransitionFunction {
 	 * @throws IllegalArgumentException If the given input doesn't map to any value
 	 */
 	public Set<StateStackSymbolsPair> get(State currentState, StackAlphabetSymbol stackTop,
-			Optional<InputAlphabetSymbol> inputSymbol) throws IllegalArgumentException {
+			Optional<InputAlphabetSymbol> inputSymbol) {
 		TransitionFunctionKey key = new TransitionFunctionKey(currentState, stackTop, inputSymbol);
 		Set<StateStackSymbolsPair> valueSet = map.get(key);
 
 		if (valueSet == null) {
-			throw new IllegalArgumentException(
-					"Unknown transition: " + currentState + " " + stackTop + " " + inputSymbol);
+			valueSet = new HashSet<>();
 		}
 
 		return valueSet;

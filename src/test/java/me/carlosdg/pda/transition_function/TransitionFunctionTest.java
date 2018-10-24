@@ -1,4 +1,4 @@
-package me.carlosdg.pda.simulator.transition_function;
+package me.carlosdg.pda.transition_function;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +44,7 @@ public class TransitionFunctionTest {
 	}
 
 	@Test
-	public void shouldThrowWithUnkownTransitionInput() {
+	public void shouldReturnEmptySetWithUnkownTransitionInput() {
 		TransitionFunction transitionFunction = new TransitionFunction();
 
 		// Inputs
@@ -52,9 +52,7 @@ public class TransitionFunctionTest {
 		Optional<InputAlphabetSymbol> inputSymbol = Optional.of(new InputAlphabetSymbol("a"));
 		StackAlphabetSymbol stackAlphabetSymbol = new StackAlphabetSymbol("S");
 
-		assertThatIllegalArgumentException().isThrownBy(() -> {
-			transitionFunction.get(s0, stackAlphabetSymbol, inputSymbol);
-		}).withMessageContaining("Unknown transition");
+		assertThat(transitionFunction.get(s0, stackAlphabetSymbol, inputSymbol)).isEmpty();
 	}
 
 }
