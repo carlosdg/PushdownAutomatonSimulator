@@ -1,18 +1,13 @@
 package me.carlosdg.pda.symbols;
 
+import me.carlosdg.pda.word.Word;
+
 /**
  * Abstract base class to represent stack and input symbols
  *
  * @author Carlos Domínguez García
  */
 public abstract class AlphabetSymbol extends Symbol {
-	/**
-	 * String representation of the Empty string/word. This is not really a symbol
-	 * but a string/word with no symbols. However, to represent it in the screen we
-	 * need this reserved token
-	 */
-	public static final String EMPTY_STRING_REPR = ".";
-
 	/**
 	 * Creates a new symbol given its string representation
 	 *
@@ -22,10 +17,10 @@ public abstract class AlphabetSymbol extends Symbol {
 	 */
 	public AlphabetSymbol(String representation) throws IllegalArgumentException {
 		super(representation);
-		if (representation.equals(AlphabetSymbol.EMPTY_STRING_REPR)) {
+		if (representation.equals(Word.EMPTY_STRING_REPR)) {
 			throw new IllegalArgumentException(
 					"Cannot create a symbol from the same string representation as the empty string ("
-							+ AlphabetSymbol.EMPTY_STRING_REPR + ")");
+							+ Word.EMPTY_STRING_REPR + ")");
 		}
 	}
 }

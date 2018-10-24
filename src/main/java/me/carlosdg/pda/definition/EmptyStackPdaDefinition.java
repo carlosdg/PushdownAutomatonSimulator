@@ -10,14 +10,14 @@ import me.carlosdg.pda.sets.StackAlphabet;
 import me.carlosdg.pda.sets.StateSet;
 import me.carlosdg.pda.sets.exceptions.DuplicatedStringInSetException;
 import me.carlosdg.pda.sets.exceptions.SymbolNotFoundInSetException;
-import me.carlosdg.pda.symbols.AlphabetSymbol;
 import me.carlosdg.pda.symbols.InputAlphabetSymbol;
 import me.carlosdg.pda.symbols.StackAlphabetSymbol;
 import me.carlosdg.pda.symbols.State;
 import me.carlosdg.pda.transition_function.TransitionFunction;
+import me.carlosdg.pda.word.Word;
 
 /**
- * Class representing an Empty Stack PDA me.carlosdg.pda.definition, that is the PDA raw
+ * Class representing an Empty Stack PDA definition, that is the PDA raw
  * configuration after being parsed as an Empty Stack PDA configuration and made
  * sure that everything is correct
  *
@@ -91,7 +91,7 @@ public class EmptyStackPdaDefinition {
 	 */
 	private Optional<InputAlphabetSymbol> parseMaybeInputAlphabetSymbol(String maybeInputAlphabetRepresentation)
 			throws SymbolNotFoundInSetException {
-		if (maybeInputAlphabetRepresentation.equals(AlphabetSymbol.EMPTY_STRING_REPR)) {
+		if (maybeInputAlphabetRepresentation.equals(Word.EMPTY_STRING_REPR)) {
 			return Optional.empty();
 		}
 
@@ -110,7 +110,7 @@ public class EmptyStackPdaDefinition {
 
 		// Only one element, the empty string -> return empty list
 		if (rawTransition.size() - startPosition == 1
-				&& rawTransition.get(startPosition).equals(AlphabetSymbol.EMPTY_STRING_REPR)) {
+				&& rawTransition.get(startPosition).equals(Word.EMPTY_STRING_REPR)) {
 			return symbols;
 		}
 

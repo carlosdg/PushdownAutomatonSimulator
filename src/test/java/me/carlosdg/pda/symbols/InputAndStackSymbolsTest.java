@@ -4,19 +4,21 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 
+import me.carlosdg.pda.word.Word;
+
 public class InputAndStackSymbolsTest {
 
 	@Test
 	public void inputSymbolShouldThrowWithEmptyStringRepresentation() {
 		assertThatIllegalArgumentException().isThrownBy(() -> {
-			new InputAlphabetSymbol(AlphabetSymbol.EMPTY_STRING_REPR);
+			new InputAlphabetSymbol(Word.EMPTY_STRING_REPR);
 		}).withMessageContaining("Cannot create a symbol").withMessageContaining("empty string");
 	}
 
 	@Test
 	public void stackSymbolShouldThrowWithEmptyStringRepresentation() {
 		assertThatIllegalArgumentException().isThrownBy(() -> {
-			new StackAlphabetSymbol(AlphabetSymbol.EMPTY_STRING_REPR);
+			new StackAlphabetSymbol(Word.EMPTY_STRING_REPR);
 		}).withMessageContaining("Cannot create a symbol").withMessageContaining("empty string");
 	}
 

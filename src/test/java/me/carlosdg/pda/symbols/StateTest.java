@@ -3,6 +3,8 @@ package me.carlosdg.pda.symbols;
 import static org.assertj.core.api.Assertions.*;
 import org.junit.Test;
 
+import me.carlosdg.pda.word.Word;
+
 public class StateTest {
 
 	@Test
@@ -14,7 +16,7 @@ public class StateTest {
 
 	@Test
 	public void shouldBeAbleToBeRepresentedLikeTheEmptyString() {
-		String repr = AlphabetSymbol.EMPTY_STRING_REPR;
+		String repr = Word.EMPTY_STRING_REPR;
 		State state = new State(repr);
 		assertThat(state.getRepresentation()).isEqualTo(repr);
 	}

@@ -1,13 +1,12 @@
 package me.carlosdg.pda.simulator.input_tape;
 
-import java.util.List;
-
 import me.carlosdg.pda.sets.InputAlphabet;
 import me.carlosdg.pda.symbols.InputAlphabetSymbol;
+import me.carlosdg.pda.word.Word;
 
 /**
  * Input tape class that holds an input word to be processed by the PDA
- * 
+ *
  * @author Carlos Domínguez García
  */
 public class InputTape {
@@ -15,7 +14,7 @@ public class InputTape {
 	/** Input alphabet */
 	InputAlphabet alphabet;
 	/** Current word in the tape */
-	List<InputAlphabetSymbol> word;
+	Word word;
 	/** Position of the next symbol to return */
 	int currentSymbolIndex = 0;
 
@@ -35,12 +34,10 @@ public class InputTape {
 	 * Sets the word in the input tape to the given one. Throws if there is a symbol
 	 * that doesn't belong to the alphabet
 	 */
-	public void setInput(List<InputAlphabetSymbol> newWord) {
-		for (InputAlphabetSymbol symbol : newWord) {
-			if (!alphabet.has(symbol)) {
-				throw new IllegalArgumentException(
-						"Invalid symbol in input word, it does not belong to the input alphabet:'" + symbol + "'");
-			}
+	public void setInput(Word newWord) {
+		if (!newWord.areAllSymbolsPartOfAlphabet(alphabet)) {
+			throw new IllegalArgumentException(
+					"Invalid word, it has a symbol that does not belong to the input alphabet:'" + newWord + "'");
 		}
 		word = newWord;
 		currentSymbolIndex = 0;
