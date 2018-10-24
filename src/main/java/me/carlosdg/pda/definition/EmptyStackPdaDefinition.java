@@ -1,4 +1,4 @@
-package me.carlosdg.pda.config.parser;
+package me.carlosdg.pda.definition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,6 @@ import me.carlosdg.pda.sets.StackAlphabet;
 import me.carlosdg.pda.sets.StateSet;
 import me.carlosdg.pda.sets.exceptions.DuplicatedStringInSetException;
 import me.carlosdg.pda.sets.exceptions.SymbolNotFoundInSetException;
-import me.carlosdg.pda.simulator.EmptyStackPdaSimulator;
 import me.carlosdg.pda.symbols.AlphabetSymbol;
 import me.carlosdg.pda.symbols.InputAlphabetSymbol;
 import me.carlosdg.pda.symbols.StackAlphabetSymbol;
@@ -18,51 +17,37 @@ import me.carlosdg.pda.symbols.State;
 import me.carlosdg.pda.transition_function.TransitionFunction;
 
 /**
- * Singleton class representing the parser that given the PDA configuration,
- * parses it and returns the instance of the simulator from the parsed elements
+ * Class representing an Empty Stack PDA me.carlosdg.pda.definition, that is the PDA raw
+ * configuration after being parsed as an Empty Stack PDA configuration and made
+ * sure that everything is correct
  *
  * @author Carlos Domínguez García
  */
-public class EmptyStackPdaConfigurationParser {
+public class EmptyStackPdaDefinition {
 
-	/** Cache variable for the singleton instance */
-	private static EmptyStackPdaConfigurationParser singletonInstance = new EmptyStackPdaConfigurationParser();
-
-	/** Entry point for getting the singleton instance of this parser */
-	public static EmptyStackPdaConfigurationParser parser() {
-		return singletonInstance;
-	}
-
-	/** Set of states */
+	/** Set of states of the PDA */
 	private StateSet stateSet;
-	/** Input alphabet */
+	/** Input alphabet of the PDA */
 	private InputAlphabet inputAlphabet;
-	/** Stack alphabet */
+	/** Stack alphabet of the PDA */
 	private StackAlphabet stackAlphabet;
-	/** Initial state */
+	/** Initial state of the PDA */
 	private State initialState;
-	/** Initial symbol at the top of the stack */
+	/** Initial symbol at the top of the stack of the PDA */
 	private StackAlphabetSymbol initialStackTop;
-	/** Transition function */
+	/** Transition function of the PDA */
 	private TransitionFunction transitionFunction;
 
 	/**
-	 * Private constructor to make sure that outside this class, instances can only
-	 * be created via the static entry point
+	 * Parses the given raw PDA configuration to initialize all the elements that an
+	 * Empty Stack PDA needs. Throws if there is any error like duplicated elements
+	 * in the sets or any string in a transition that doesn't represent a symbol of
+	 * its corresponding set
 	 */
-	private EmptyStackPdaConfigurationParser() {
-	}
-
-	/**
-	 * Parses the given raw PDA configuration to create all the elements that the
-	 * PDA needs. Throws if there is any error like duplicated elements in the sets
-	 * or there is any symbol in a transition that is not part of any set
-	 */
-	public EmptyStackPdaSimulator parse(PdaConfiguration configuration)
+	public EmptyStackPdaDefinition(PdaConfiguration configuration)
 			throws DuplicatedStringInSetException, SymbolNotFoundInSetException {
-		// Parse the sets making sure that there are no duplicates
-		// And check that the starting state and stack top belong to their respective
-		// set
+		// Parse the sets making sure that there are no duplicates. And
+		// check that the starting state and stack top belong to their respective set
 		stateSet = new StateSet(configuration.getStateNames());
 		inputAlphabet = new InputAlphabet(configuration.getInputAlphabetSymbolNames());
 		stackAlphabet = new StackAlphabet(configuration.getStackAlphabetSymbolNames());
@@ -74,9 +59,6 @@ public class EmptyStackPdaConfigurationParser {
 		for (List<String> rawTransition : configuration.getTransitions()) {
 			parseAndAddTransition(transitionFunction, rawTransition);
 		}
-
-		return new EmptyStackPdaSimulator(stateSet, inputAlphabet, stackAlphabet, initialState, initialStackTop,
-				transitionFunction);
 	}
 
 	/**
@@ -144,6 +126,32 @@ public class EmptyStackPdaConfigurationParser {
 		}
 
 		return symbols;
+	}
+
+	// Getters
+
+	public StateSet getSetOfStates() {
+		return stateSet;
+	}
+
+	public InputAlphabet getInputAlphabet() {
+		return inputAlphabet;
+	}
+
+	public StackAlphabet getStackAlphabet() {
+		return stackAlphabet;
+	}
+
+	public State getInitialState() {
+		return initialState;
+	}
+
+	public StackAlphabetSymbol getInitialStackTop() {
+		return initialStackTop;
+	}
+
+	public TransitionFunction getTransitionFunction() {
+		return transitionFunction;
 	}
 
 }

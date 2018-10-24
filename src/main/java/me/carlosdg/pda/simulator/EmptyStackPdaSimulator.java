@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import me.carlosdg.pda.sets.InputAlphabet;
-import me.carlosdg.pda.sets.StackAlphabet;
+import me.carlosdg.pda.definition.EmptyStackPdaDefinition;
 import me.carlosdg.pda.sets.StateSet;
 import me.carlosdg.pda.simulator.input_tape.InputTape;
 import me.carlosdg.pda.simulator.stack.PdaStack;
@@ -35,14 +34,13 @@ public class EmptyStackPdaSimulator {
 	/** Input tape */
 	private InputTape inputTape;
 
-	/** Create the simulator from the PDA definition elements */
-	public EmptyStackPdaSimulator(StateSet stateSet, InputAlphabet inputAlphabet, StackAlphabet stackAlphabet,
-			State initialState, StackAlphabetSymbol initialStackTop, TransitionFunction transitionFunction) {
-		this.transitionFunction = transitionFunction;
-		this.stateSet = stateSet;
-		this.initialState = initialState;
-		stack = new PdaStack(stackAlphabet, initialStackTop);
-		inputTape = new InputTape(inputAlphabet);
+	/** Create the simulator from the PDA me.carlosdg.pda.definition elements */
+	public EmptyStackPdaSimulator(EmptyStackPdaDefinition pdaDefinition) {
+		transitionFunction = pdaDefinition.getTransitionFunction();
+		stateSet = pdaDefinition.getSetOfStates();
+		initialState = pdaDefinition.getInitialState();
+		stack = new PdaStack(pdaDefinition.getStackAlphabet(), pdaDefinition.getInitialStackTop());
+		inputTape = new InputTape(pdaDefinition.getInputAlphabet());
 	}
 
 	/** Returns whether the given input word is accepted by the automaton or not */
@@ -55,8 +53,8 @@ public class EmptyStackPdaSimulator {
 	}
 
 	/**
-	 * Recursive definition of the automaton behavior to accept or reject the word
-	 * in the input tape
+	 * Recursive me.carlosdg.pda.definition of the automaton behavior to accept or
+	 * reject the word in the input tape
 	 */
 	private boolean recursiveAccepts(State currentState, InputTape inputTape, PdaStack stack) {
 		// Check accept condition
