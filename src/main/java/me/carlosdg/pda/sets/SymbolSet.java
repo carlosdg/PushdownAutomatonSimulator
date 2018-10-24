@@ -53,6 +53,11 @@ public abstract class SymbolSet<T extends Symbol> {
 		return symbol;
 	}
 
+	/** Returns whether the given symbol is in the set or not */
+	public boolean has(Symbol symbol) {
+		return mapReprToSymbol.get(symbol.getRepresentation()) != null;
+	}
+
 	/** Returns an instance of the symbols of this alphabet */
 	abstract protected T newSymbol(String representation);
 

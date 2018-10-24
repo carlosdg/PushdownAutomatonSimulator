@@ -23,6 +23,29 @@ public class SymbolSetsTest {
 	}
 
 	@Test
+	public void shouldReturnTrueWhenAskingForSymbolsInTheSet()
+			throws DuplicatedStringInSetException, SymbolNotFoundInSetException {
+		Collection<String> symbolRepresentations = Arrays.asList("q0", "q1", "q2");
+		StateSet stateSet = new StateSet(symbolRepresentations);
+
+		assertThat(stateSet.has(new State("q0"))).isTrue();
+		assertThat(stateSet.has(new State("q1"))).isTrue();
+		assertThat(stateSet.has(new State("q2"))).isTrue();
+	}
+
+	@Test
+	public void shouldReturnFalseWhenAskingForSymbolsNotInTheSet()
+			throws DuplicatedStringInSetException, SymbolNotFoundInSetException {
+		Collection<String> symbolRepresentations = Arrays.asList("q0", "q1", "q2");
+		StateSet stateSet = new StateSet(symbolRepresentations);
+
+		assertThat(stateSet.has(new State("p"))).isFalse();
+		assertThat(stateSet.has(new State("q"))).isFalse();
+		assertThat(stateSet.has(new State("q3"))).isFalse();
+		assertThat(stateSet.has(new State(""))).isFalse();
+	}
+
+	@Test
 	public void shouldThrowWithOneDuplicateString() {
 		assertThatThrownBy(() -> new StateSet(Arrays.asList("q0", "q0")))
 				.isInstanceOf(DuplicatedStringInSetException.class).hasMessageContaining("q0");
