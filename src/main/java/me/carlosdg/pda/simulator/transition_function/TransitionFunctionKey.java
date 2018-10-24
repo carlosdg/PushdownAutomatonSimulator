@@ -16,11 +16,11 @@ import me.carlosdg.pda.symbols.State;
 class TransitionFunctionKey {
 
 	/** Current PDA state */
-	State state;
+	private State state;
 	/** Symbol at the top of the stack */
-	StackAlphabetSymbol stackSymbol;
+	private StackAlphabetSymbol stackSymbol;
 	/** Symbol from the input tape of the empty string */
-	Optional<InputAlphabetSymbol> optionalInputSymbol;
+	private Optional<InputAlphabetSymbol> optionalInputSymbol;
 
 	/**
 	 * Creates an instance of this key

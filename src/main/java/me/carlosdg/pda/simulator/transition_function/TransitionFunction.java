@@ -26,7 +26,7 @@ public class TransitionFunction {
 	 * (the map) returns the next state and 0 or more stack symbols to push to the
 	 * stack
 	 */
-	Map<TransitionFunctionKey, Set<StateStackSymbolsPair>> map = new HashMap<>();
+	private Map<TransitionFunctionKey, Set<StateStackSymbolsPair>> map = new HashMap<>();
 
 	/**
 	 * Returns the value of the transition function associated to the given input
@@ -41,7 +41,7 @@ public class TransitionFunction {
 	 *         non-deterministic
 	 * @throws IllegalArgumentException If the given input doesn't map to any value
 	 */
-	Set<StateStackSymbolsPair> get(State currentState, StackAlphabetSymbol stackTop,
+	public Set<StateStackSymbolsPair> get(State currentState, StackAlphabetSymbol stackTop,
 			Optional<InputAlphabetSymbol> inputSymbol) throws IllegalArgumentException {
 		TransitionFunctionKey key = new TransitionFunctionKey(currentState, stackTop, inputSymbol);
 		Set<StateStackSymbolsPair> valueSet = map.get(key);
@@ -62,7 +62,7 @@ public class TransitionFunction {
 	 * @param inputSymbol Symbol from the input tape
 	 * @param newElement  Element to map to the given input
 	 */
-	void put(State state, StackAlphabetSymbol stackSymbol, Optional<InputAlphabetSymbol> inputSymbol,
+	public void put(State state, StackAlphabetSymbol stackSymbol, Optional<InputAlphabetSymbol> inputSymbol,
 			StateStackSymbolsPair newElement) {
 		TransitionFunctionKey key = new TransitionFunctionKey(state, stackSymbol, inputSymbol);
 		Set<StateStackSymbolsPair> valueSet = map.get(key);
@@ -86,8 +86,8 @@ public class TransitionFunction {
 	 * @param symbolsToPushToStack The list of 0 or more stack symbols to be pushed
 	 *                             to the stack
 	 */
-	void put(State state, StackAlphabetSymbol stackSymbol, Optional<InputAlphabetSymbol> inputSymbol, State nextState,
-			List<StackAlphabetSymbol> symbolsToPushToStack) {
+	public void put(State state, StackAlphabetSymbol stackSymbol, Optional<InputAlphabetSymbol> inputSymbol,
+			State nextState, List<StackAlphabetSymbol> symbolsToPushToStack) {
 		put(state, stackSymbol, inputSymbol, new StateStackSymbolsPair(nextState, symbolsToPushToStack));
 	}
 
