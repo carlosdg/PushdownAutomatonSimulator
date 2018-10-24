@@ -82,4 +82,15 @@ public class PdaStack {
 		initialSymbol = newInitialSymbol;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		for (StackAlphabetSymbol symbol : stack) {
+			builder.append(symbol);
+			builder.append(" ");
+		}
+
+		return builder.toString();
+	}
+
 }

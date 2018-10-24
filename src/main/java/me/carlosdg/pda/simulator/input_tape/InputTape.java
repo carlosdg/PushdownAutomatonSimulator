@@ -61,4 +61,15 @@ public class InputTape {
 	public boolean empty() {
 		return currentSymbolIndex >= word.size();
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		for (int i = currentSymbolIndex; i < word.size(); ++i) {
+			builder.append(word.get(i));
+			builder.append(" ");
+		}
+
+		return builder.toString();
+	}
 }

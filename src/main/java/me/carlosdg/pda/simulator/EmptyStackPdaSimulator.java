@@ -5,6 +5,7 @@ import java.util.Set;
 
 import me.carlosdg.pda.definition.EmptyStackPdaDefinition;
 import me.carlosdg.pda.simulator.input_tape.InputTape;
+import me.carlosdg.pda.simulator.spies.PdaExecutionSpy;
 import me.carlosdg.pda.simulator.stack.PdaStack;
 import me.carlosdg.pda.symbols.InputAlphabetSymbol;
 import me.carlosdg.pda.symbols.StackAlphabetSymbol;
@@ -28,6 +29,8 @@ public class EmptyStackPdaSimulator {
 	private PdaStack stack;
 	/** Input tape */
 	private InputTape inputTape;
+	/** Object used to log to the caller the progress of the algorithm */
+	private Optional<PdaExecutionSpy> maybeSpy;
 
 	/** Create the simulator from the PDA definition elements */
 	public EmptyStackPdaSimulator(EmptyStackPdaDefinition pdaDefinition) {
@@ -38,9 +41,10 @@ public class EmptyStackPdaSimulator {
 	}
 
 	/** Returns whether the given input word is accepted by the automaton or not */
-	public boolean accepts(Word inputWord) {
+	public boolean accepts(Word inputWord, Optional<PdaExecutionSpy> maybeSpy) {
 		stack.reset();
 		inputTape.setInput(inputWord);
+		this.maybeSpy = maybeSpy;
 
 		return recursiveAccepts(initialState, inputTape, stack);
 	}
@@ -50,13 +54,17 @@ public class EmptyStackPdaSimulator {
 	 * in the input tape
 	 */
 	private boolean recursiveAccepts(State currentState, InputTape inputTape, PdaStack stack) {
+		maybeSpy.ifPresent(spy -> spy.newIteration(currentState, inputTape, stack));
+
 		// Check accept condition
 		if (stack.empty() && inputTape.empty()) {
+			maybeSpy.ifPresent(spy -> spy.pathFinished(true));
 			return true;
 		}
 
 		// Check non acceptance because empty stack or tape
 		if (stack.empty() || inputTape.empty()) {
+			maybeSpy.ifPresent(spy -> spy.pathFinished(false));
 			return false;
 		}
 
@@ -72,6 +80,7 @@ public class EmptyStackPdaSimulator {
 			PdaStack tempStack = new PdaStack(stack);
 			tempStack.push(pair.getSymbols());
 			if (recursiveAccepts(pair.getState(), new InputTape(inputTape), tempStack)) {
+				maybeSpy.ifPresent(spy -> spy.pathFinished(true));
 				return true;
 			}
 		}
@@ -85,11 +94,13 @@ public class EmptyStackPdaSimulator {
 			PdaStack tempStack = new PdaStack(stack);
 			tempStack.push(pair.getSymbols());
 			if (recursiveAccepts(pair.getState(), new InputTape(inputTape), tempStack)) {
+				maybeSpy.ifPresent(spy -> spy.pathFinished(true));
 				return true;
 			}
 		}
 
 		// Not accepted because there are no transitions left
+		maybeSpy.ifPresent(spy -> spy.pathFinished(false));
 		return false;
 	}
 
