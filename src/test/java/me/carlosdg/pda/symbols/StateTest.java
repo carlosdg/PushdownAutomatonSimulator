@@ -13,6 +13,13 @@ public class StateTest {
 	}
 
 	@Test
+	public void shouldBeAbleToBeRepresentedLikeTheEmptyString() {
+		String repr = AlphabetSymbol.EMPTY_STRING_REPR;
+		State state = new State(repr);
+		assertThat(state.getRepresentation()).isEqualTo(repr);
+	}
+
+	@Test
 	public void shouldBeEqualToAReferenceToItself() {
 		String repr = "q0";
 		State state = new State(repr);
