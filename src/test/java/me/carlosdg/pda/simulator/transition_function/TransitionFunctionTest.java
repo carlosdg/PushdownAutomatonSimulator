@@ -11,6 +11,8 @@ import org.junit.Test;
 import me.carlosdg.pda.symbols.InputAlphabetSymbol;
 import me.carlosdg.pda.symbols.StackAlphabetSymbol;
 import me.carlosdg.pda.symbols.State;
+import me.carlosdg.pda.transition_function.StateStackSymbolsPair;
+import me.carlosdg.pda.transition_function.TransitionFunction;
 
 public class TransitionFunctionTest {
 

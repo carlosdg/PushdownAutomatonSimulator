@@ -1,4 +1,4 @@
-package me.carlosdg.pda.simulator.transition_function;
+package me.carlosdg.pda.transition_function;
 
 import java.util.Objects;
 import java.util.Optional;
