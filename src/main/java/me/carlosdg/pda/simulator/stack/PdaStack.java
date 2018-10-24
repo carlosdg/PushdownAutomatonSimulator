@@ -18,16 +18,20 @@ public class PdaStack {
 	private StackAlphabet alphabet;
 	/** Stack */
 	private Deque<StackAlphabetSymbol> stack = new ArrayDeque<>();
+	/** Initial stack top */
+	private StackAlphabetSymbol initialSymbol;
 
 	/** Creates a PDA Stack with the given alphabet and initial top symbol */
 	public PdaStack(StackAlphabet alphabet, StackAlphabetSymbol initialSymbol) {
 		this.alphabet = alphabet;
+		setInitialSymbol(initialSymbol);
 		push(initialSymbol);
 	}
 
 	/** Creates this PDA Stack from copying the given stack */
 	public PdaStack(PdaStack other) {
 		alphabet = other.alphabet;
+		setInitialSymbol(other.initialSymbol);
 		stack.addAll(other.stack);
 	}
 
@@ -64,9 +68,18 @@ public class PdaStack {
 	}
 
 	/** Removes all symbols from the stack and inserts the given symbol */
-	public void reset(StackAlphabetSymbol newInitialSymbol) {
+	public void reset() {
 		stack.clear();
-		push(newInitialSymbol);
+		push(initialSymbol);
+	}
+
+	/** Sets the initial symbol. Throws if it doesn't belong to the alphabet */
+	private void setInitialSymbol(StackAlphabetSymbol newInitialSymbol) {
+		if (!alphabet.has(newInitialSymbol)) {
+			throw new IllegalArgumentException(
+					"Invalid initial stack symbol '" + newInitialSymbol + "'. It doesn't belong to the stack alphabet");
+		}
+		initialSymbol = newInitialSymbol;
 	}
 
 }
