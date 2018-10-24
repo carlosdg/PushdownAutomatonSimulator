@@ -10,6 +10,7 @@ import me.carlosdg.pda.sets.StackAlphabet;
 import me.carlosdg.pda.sets.StateSet;
 import me.carlosdg.pda.sets.exceptions.DuplicatedStringInSetException;
 import me.carlosdg.pda.sets.exceptions.SymbolNotFoundInSetException;
+import me.carlosdg.pda.simulator.EmptyStackPdaSimulator;
 import me.carlosdg.pda.symbols.AlphabetSymbol;
 import me.carlosdg.pda.symbols.InputAlphabetSymbol;
 import me.carlosdg.pda.symbols.StackAlphabetSymbol;
@@ -57,7 +58,7 @@ public class EmptyStackPdaConfigurationParser {
 	 * PDA needs. Throws if there is any error like duplicated elements in the sets
 	 * or there is any symbol in a transition that is not part of any set
 	 */
-	public void parse(PdaConfiguration configuration)
+	public EmptyStackPdaSimulator parse(PdaConfiguration configuration)
 			throws DuplicatedStringInSetException, SymbolNotFoundInSetException {
 		// Parse the sets making sure that there are no duplicates
 		// And check that the starting state and stack top belong to their respective
@@ -74,7 +75,8 @@ public class EmptyStackPdaConfigurationParser {
 			parseAndAddTransition(transitionFunction, rawTransition);
 		}
 
-		// TODO: create and return a simulator instance from the parsed elements
+		return new EmptyStackPdaSimulator(stateSet, inputAlphabet, stackAlphabet, initialState, initialStackTop,
+				transitionFunction);
 	}
 
 	/**
@@ -90,11 +92,7 @@ public class EmptyStackPdaConfigurationParser {
 			Optional<InputAlphabetSymbol> inputAlphabetSymbol = parseMaybeInputAlphabetSymbol(rawTransition.get(1));
 			StackAlphabetSymbol topOfStack = stackAlphabet.getSymbol(rawTransition.get(2));
 			State nextState = stateSet.getSymbol(rawTransition.get(3));
-			List<StackAlphabetSymbol> stackSymbolsToPush = new ArrayList<>();
-
-			for (int i = 4; i < rawTransition.size(); ++i) {
-				stackSymbolsToPush.add(stackAlphabet.getSymbol(rawTransition.get(i)));
-			}
+			List<StackAlphabetSymbol> stackSymbolsToPush = parseTransitionStackSymbols(rawTransition, 4);
 
 			transitionFunction.put(initialState, topOfStack, inputAlphabetSymbol, nextState, stackSymbolsToPush);
 		} catch (IndexOutOfBoundsException e) {
@@ -116,6 +114,36 @@ public class EmptyStackPdaConfigurationParser {
 		}
 
 		return Optional.of(inputAlphabet.getSymbol(maybeInputAlphabetRepresentation));
+	}
+
+	/**
+	 * Returns the list of parsed stack symbols from the given raw transition and
+	 * the start position of the stack symbol representations. Returns an empty list
+	 * in case of the empty string. Throws if any string doesn't represent any
+	 * symbol in the stack alphabet
+	 */
+	private List<StackAlphabetSymbol> parseTransitionStackSymbols(List<String> rawTransition, int startPosition)
+			throws SymbolNotFoundInSetException, IllegalArgumentException {
+		List<StackAlphabetSymbol> symbols = new ArrayList<>();
+
+		// Only one element, the empty string -> return empty list
+		if (rawTransition.size() - startPosition == 1
+				&& rawTransition.get(startPosition).equals(AlphabetSymbol.EMPTY_STRING_REPR)) {
+			return symbols;
+		}
+
+		for (int i = startPosition; i < rawTransition.size(); ++i) {
+			symbols.add(stackAlphabet.getSymbol(rawTransition.get(i)));
+		}
+
+		// If now the list is empty means that there were no symbols, not even the empty
+		// string -> throw
+		if (symbols.isEmpty()) {
+			throw new IllegalArgumentException(
+					"No stack symbols nor empty string found in transition (" + String.join(", ", rawTransition) + ")");
+		}
+
+		return symbols;
 	}
 
 }
