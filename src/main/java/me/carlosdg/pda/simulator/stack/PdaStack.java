@@ -1,15 +1,15 @@
 package me.carlosdg.pda.simulator.stack;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.EmptyStackException;
 import java.util.List;
-import java.util.Stack;
-
 import me.carlosdg.pda.sets.StackAlphabet;
 import me.carlosdg.pda.symbols.StackAlphabetSymbol;
 
 /**
  * PDA Stack
- * 
+ *
  * @author Carlos Domínguez García
  */
 public class PdaStack {
@@ -17,7 +17,7 @@ public class PdaStack {
 	/** Stack alphabet (set of allowed symbols to be on the stack) */
 	private StackAlphabet alphabet;
 	/** Stack */
-	private Stack<StackAlphabetSymbol> stack = new Stack<>();
+	private Deque<StackAlphabetSymbol> stack = new ArrayDeque<>();
 
 	/** Creates a PDA Stack with the given alphabet and initial top symbol */
 	public PdaStack(StackAlphabet alphabet, StackAlphabetSymbol initialSymbol) {
@@ -25,9 +25,15 @@ public class PdaStack {
 		push(initialSymbol);
 	}
 
+	/** Creates this PDA Stack from copying the given stack */
+	public PdaStack(PdaStack other) {
+		alphabet = other.alphabet;
+		stack.addAll(other.stack);
+	}
+
 	/** Returns whether the stack is empty or not */
 	public boolean empty() {
-		return stack.empty();
+		return stack.isEmpty();
 	}
 
 	/**
@@ -59,7 +65,7 @@ public class PdaStack {
 
 	/** Removes all symbols from the stack and inserts the given symbol */
 	public void reset(StackAlphabetSymbol newInitialSymbol) {
-		stack.removeAllElements();
+		stack.clear();
 		push(newInitialSymbol);
 	}
 
