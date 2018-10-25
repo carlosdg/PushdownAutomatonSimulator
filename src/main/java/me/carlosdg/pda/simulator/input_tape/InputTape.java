@@ -23,13 +23,6 @@ public class InputTape {
 		this.alphabet = alphabet;
 	}
 
-	/** Instantiates an InputTape object as a copy of the given input tape */
-	public InputTape(InputTape other) {
-		alphabet = other.alphabet;
-		word = other.word;
-		currentSymbolIndex = other.currentSymbolIndex;
-	}
-
 	/**
 	 * Sets the word in the input tape to the given one. Throws if there is a symbol
 	 * that doesn't belong to the alphabet
@@ -55,6 +48,13 @@ public class InputTape {
 		currentSymbolIndex += 1;
 
 		return symbol;
+	}
+
+	public void revertNextSymbol() {
+		if (currentSymbolIndex <= 0) {
+			throw new IndexOutOfBoundsException("There are no more symbols in the input string");
+		}
+		currentSymbolIndex -= 1;
 	}
 
 	/** Returns whether all the input symbols have been read or not */

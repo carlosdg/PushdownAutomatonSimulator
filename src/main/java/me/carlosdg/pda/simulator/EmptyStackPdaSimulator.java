@@ -1,5 +1,7 @@
 package me.carlosdg.pda.simulator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -46,61 +48,79 @@ public class EmptyStackPdaSimulator {
 		inputTape.setInput(inputWord);
 		this.maybeSpy = maybeSpy;
 
-		return recursiveAccepts(initialState, inputTape, stack);
+		return recursiveAccepts(initialState, new ArrayList<>());
 	}
 
 	/**
-	 * Recursive definition of the automaton behavior to accept or reject the word
-	 * in the input tape
+	 * Recursive algorithm to know if the word in the input tape is accepted by the
+	 * automaton or not
+	 *
+	 * @param currentState       Current state of the automaton
+	 * @param stackSymbolsToPush List of stack symbols to push in the current
+	 *                           iteration. This is needed so the function handles
+	 *                           the push of these symbols and at the end, before
+	 *                           returning, it makes sure that the stack is in the
+	 *                           same state as before calling the function
+	 * @return Whether the string in the input tape is accepted or not
 	 */
-	private boolean recursiveAccepts(State currentState, InputTape inputTape, PdaStack stack) {
-		maybeSpy.ifPresent(spy -> spy.newIteration(currentState, inputTape, stack));
+	private boolean recursiveAccepts(State currentState, List<StackAlphabetSymbol> stackSymbolsToPush) {
+		boolean isInputAccepted = false;
+		stack.push(stackSymbolsToPush);
 
-		// Check accept condition
-		if (stack.empty() && inputTape.empty()) {
-			maybeSpy.ifPresent(spy -> spy.pathFinished(true));
-			return true;
+		// If the stack is empty -> no more possible transitions
+		// If the input has been read -> string accepted.
+		// Else -> we need to see if there are applicable epsilon moves
+		if (stack.empty()) {
+			isInputAccepted = inputTape.empty();
+		} else {
+			// Get the top of the stack
+			StackAlphabetSymbol stackTop = stack.pop();
+
+			// Transitions with input symbol
+			if (!isInputAccepted && !inputTape.empty()) {
+				// Get the input symbol, run all the transitions and return the input symbol
+				// to leave the tape as the caller gave it to us
+				InputAlphabetSymbol inputSymbol = inputTape.nextSymbol();
+				isInputAccepted = runAllPossibleTransitions(currentState, stackTop, Optional.of(inputSymbol));
+				inputTape.revertNextSymbol();
+			}
+
+			// Transitions with epsilon-moves
+			if (!isInputAccepted) {
+				isInputAccepted = runAllPossibleTransitions(currentState, stackTop, Optional.empty());
+			}
+
+			// Restore the stack top to leave the stack as the caller gave it to us
+			stack.push(stackTop);
 		}
 
-		// Check non acceptance because empty stack or tape
-		if (stack.empty() || inputTape.empty()) {
-			maybeSpy.ifPresent(spy -> spy.pathFinished(false));
-			return false;
-		}
+		// Remove the pushed elements to leave the stack as the caller expects
+		stack.pop(stackSymbolsToPush.size());
+		return isInputAccepted;
+	}
 
-		// Get stack symbol. And first we'll try with the epsilon-moves
-		StackAlphabetSymbol stackTop = stack.pop();
-		Optional<InputAlphabetSymbol> inputSymbol = Optional.empty();
+	/**
+	 * Get all possible transitions for the given input and runs recursiveAccept on
+	 * everyone until any accepts the input. Returns true if any path accepted the
+	 * string, false otherwise
+	 *
+	 * @param currentState Current PDA state
+	 * @param stackTop     Top of the stack
+	 * @param inputSymbol  Optional input symbol. If empty is given, the epsilon
+	 *                     moves are used
+	 * @return Whether the input string is accepted by any of the paths or not
+	 */
+	private boolean runAllPossibleTransitions(State currentState, StackAlphabetSymbol stackTop,
+			Optional<InputAlphabetSymbol> inputSymbol) {
 
-		// Transitions with empty string
 		Set<StateStackSymbolsPair> possibleTransitions = transitionFunction.get(currentState, stackTop, inputSymbol);
 
-		// Recurse
 		for (StateStackSymbolsPair pair : possibleTransitions) {
-			PdaStack tempStack = new PdaStack(stack);
-			tempStack.push(pair.getSymbols());
-			if (recursiveAccepts(pair.getState(), new InputTape(inputTape), tempStack)) {
-				maybeSpy.ifPresent(spy -> spy.pathFinished(true));
+			if (recursiveAccepts(pair.getState(), pair.getSymbols())) {
 				return true;
 			}
 		}
 
-		// Transitions with input symbol
-		inputSymbol = Optional.of(inputTape.nextSymbol());
-		possibleTransitions = transitionFunction.get(currentState, stackTop, inputSymbol);
-
-		// Recurse
-		for (StateStackSymbolsPair pair : possibleTransitions) {
-			PdaStack tempStack = new PdaStack(stack);
-			tempStack.push(pair.getSymbols());
-			if (recursiveAccepts(pair.getState(), new InputTape(inputTape), tempStack)) {
-				maybeSpy.ifPresent(spy -> spy.pathFinished(true));
-				return true;
-			}
-		}
-
-		// Not accepted because there are no transitions left
-		maybeSpy.ifPresent(spy -> spy.pathFinished(false));
 		return false;
 	}
 

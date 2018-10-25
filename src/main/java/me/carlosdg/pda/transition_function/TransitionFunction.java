@@ -39,7 +39,6 @@ public class TransitionFunction {
 	 *         the stack) associated with the given input. Note that a set of values
 	 *         are associated to an input because this transition function is
 	 *         non-deterministic
-	 * @throws IllegalArgumentException If the given input doesn't map to any value
 	 */
 	public Set<StateStackSymbolsPair> get(State currentState, StackAlphabetSymbol stackTop,
 			Optional<InputAlphabetSymbol> inputSymbol) {
@@ -51,6 +50,11 @@ public class TransitionFunction {
 		}
 
 		return valueSet;
+	}
+
+	/** Alias for get(currentState, stackTop, Optional.empty()) */
+	public Set<StateStackSymbolsPair> getEpsilonMove(State currentState, StackAlphabetSymbol stackTop) {
+		return get(currentState, stackTop, Optional.empty());
 	}
 
 	/**

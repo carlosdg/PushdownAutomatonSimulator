@@ -28,13 +28,6 @@ public class PdaStack {
 		push(initialSymbol);
 	}
 
-	/** Creates this PDA Stack from copying the given stack */
-	public PdaStack(PdaStack other) {
-		alphabet = other.alphabet;
-		setInitialSymbol(other.initialSymbol);
-		stack.addAll(other.stack);
-	}
-
 	/** Returns whether the stack is empty or not */
 	public boolean empty() {
 		return stack.isEmpty();
@@ -56,15 +49,22 @@ public class PdaStack {
 	 * Pushes the given list of symbol to the stack, throws if any symbol is part of
 	 * the the alphabet
 	 */
-	public void push(List<StackAlphabetSymbol> newSymbols) {
-		for (StackAlphabetSymbol symbol : newSymbols) {
-			push(symbol);
+	public void push(List<StackAlphabetSymbol> symbols) {
+		for (int i = symbols.size() - 1; i >= 0; --i) {
+			push(symbols.get(i));
 		}
 	}
 
 	/** Removes the top symbol from the stack and returns it */
 	public StackAlphabetSymbol pop() throws EmptyStackException {
 		return stack.pop();
+	}
+
+	/** Removes the given number of elements from the top of the stack */
+	public void pop(int numberElementsToPop) throws EmptyStackException {
+		for (int i = 0; i < numberElementsToPop; ++i) {
+			pop();
+		}
 	}
 
 	/** Removes all symbols from the stack and inserts the given symbol */

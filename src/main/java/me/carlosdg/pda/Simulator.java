@@ -34,7 +34,7 @@ public class Simulator {
 			EmptyStackPdaSimulator simulator = new EmptyStackPdaSimulator(pdaDefinition);
 			WordReader wordReader = new WordFileReader(inputWordFilePath);
 			Word inputWord = wordReader.getWord();
-			Optional<PdaExecutionSpy> maybeLogger = debug == "0" ? Optional.empty()
+			Optional<PdaExecutionSpy> maybeLogger = debug.equals("0") ? Optional.empty()
 					: Optional.of(new PdaExecutionConsoleLogger());
 			boolean isAccepted = simulator.accepts(inputWord, maybeLogger);
 			System.out.println("Accepted: " + isAccepted);
