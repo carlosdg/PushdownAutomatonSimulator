@@ -29,7 +29,7 @@ public class PdaStack {
 	}
 
 	/** Returns whether the stack is empty or not */
-	public boolean empty() {
+	public boolean isEmpty() {
 		return stack.isEmpty();
 	}
 
@@ -91,6 +91,10 @@ public class PdaStack {
 		}
 
 		return builder.toString();
+	}
+
+	public StackAlphabetSymbol peek() {
+		return stack.peek();
 	}
 
 }

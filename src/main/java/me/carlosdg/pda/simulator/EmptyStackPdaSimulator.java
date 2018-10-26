@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import me.carlosdg.pda.definition.EmptyStackPdaDefinition;
 import me.carlosdg.pda.simulator.input_tape.InputTape;
 import me.carlosdg.pda.simulator.spies.PdaExecutionSpy;
@@ -67,27 +66,43 @@ public class EmptyStackPdaSimulator {
 		boolean isInputAccepted = false;
 		stack.push(stackSymbolsToPush);
 
-		// If the stack is empty -> no more possible transitions
-		// If the input has been read -> string accepted.
-		// Else -> we need to see if there are applicable epsilon moves
-		if (stack.empty()) {
-			isInputAccepted = inputTape.empty();
-		} else {
-			// Get the top of the stack
-			StackAlphabetSymbol stackTop = stack.pop();
+		// Notify spy of the new iteration
+		maybeSpy.ifPresent(
+				spy -> spy.newIteration(currentState, inputTape, stack, transitionsRepresentation(currentState)));
 
-			// Transitions with input symbol
-			if (!isInputAccepted && !inputTape.empty()) {
-				// Get the input symbol, run all the transitions and return the input symbol
-				// to leave the tape as the caller gave it to us
-				InputAlphabetSymbol inputSymbol = inputTape.nextSymbol();
-				isInputAccepted = runAllPossibleTransitions(currentState, stackTop, Optional.of(inputSymbol));
-				inputTape.revertNextSymbol();
+		// If the stack is empty -> no more transitions
+		if (stack.isEmpty()) {
+			// Input is accepted if the tape is all consumed
+			isInputAccepted = inputTape.isEmpty();
+			// Notify the spy that we reached a "leaf node", a point with no transitions
+			if (maybeSpy.isPresent()) {
+				maybeSpy.get().pathFinished(isInputAccepted);
+			}
+		} else {
+			// Pop the top of the stack to perform the transitions
+			StackAlphabetSymbol stackTop = stack.pop();
+			Set<StateStackSymbolsPair> transitionResults;
+			boolean noTransitions = true; // Flag to know if there are no transitions
+
+			// Transitions consuming the input symbol
+			if (!inputTape.isEmpty()) {
+				Optional<InputAlphabetSymbol> maybeInputSymbol = Optional.of(inputTape.consumeInput());
+				transitionResults = transitionFunction.get(currentState, stackTop, maybeInputSymbol);
+				noTransitions = noTransitions && transitionResults.size() == 0;
+				isInputAccepted = exploreTransitions(transitionResults);
+				inputTape.revertConsumption(); // Restore the taken input symbol for the following transitions
 			}
 
-			// Transitions with epsilon-moves
+			// Epsilon moves (transitions consuming no input)
 			if (!isInputAccepted) {
-				isInputAccepted = runAllPossibleTransitions(currentState, stackTop, Optional.empty());
+				transitionResults = transitionFunction.getEpsilonMoves(currentState, stackTop);
+				noTransitions = noTransitions && transitionResults.size() == 0;
+				isInputAccepted = exploreTransitions(transitionResults);
+			}
+
+			// If there were no transitions notify the spy that we reached a "leaf node"
+			if (noTransitions && maybeSpy.isPresent()) {
+				maybeSpy.get().pathFinished(isInputAccepted);
 			}
 
 			// Restore the stack top to leave the stack as the caller gave it to us
@@ -100,28 +115,79 @@ public class EmptyStackPdaSimulator {
 	}
 
 	/**
-	 * Get all possible transitions for the given input and runs recursiveAccept on
-	 * everyone until any accepts the input. Returns true if any path accepted the
-	 * string, false otherwise
+	 * Runs recursiveAccept on every given transition result until any accepts the
+	 * input. Returns true if any path accepted the string, false otherwise
 	 *
-	 * @param currentState Current PDA state
-	 * @param stackTop     Top of the stack
-	 * @param inputSymbol  Optional input symbol. If empty is given, the epsilon
-	 *                     moves are used
+	 * @param transitionResults Transition results to be run
 	 * @return Whether the input string is accepted by any of the paths or not
 	 */
-	private boolean runAllPossibleTransitions(State currentState, StackAlphabetSymbol stackTop,
-			Optional<InputAlphabetSymbol> inputSymbol) {
+	private boolean exploreTransitions(Set<StateStackSymbolsPair> transitionResults) {
+		boolean isInputAccepted = false;
 
-		Set<StateStackSymbolsPair> possibleTransitions = transitionFunction.get(currentState, stackTop, inputSymbol);
-
-		for (StateStackSymbolsPair pair : possibleTransitions) {
+		for (StateStackSymbolsPair pair : transitionResults) {
 			if (recursiveAccepts(pair.getState(), pair.getSymbols())) {
-				return true;
+				isInputAccepted = true;
+				break;
 			}
 		}
 
-		return false;
+		return isInputAccepted;
+	}
+
+	// TODO: remove this method and instead give an object representing the
+	// transitions to the spies
+	/**
+	 * Returns the string representation of all the transitions for the current
+	 * state, top of the stack and input symbol (including epsilon moves)
+	 */
+	private String transitionsRepresentation(State currentState) {
+		StringBuilder builder = new StringBuilder();
+		StackAlphabetSymbol stackTop = stack.peek();
+		String stackTopRepr = stackTop == null ? Word.EMPTY_STRING_REPR : stackTop.getRepresentation();
+		Optional<InputAlphabetSymbol> maybeInputSymbol;
+		if (inputTape.isEmpty()) {
+			maybeInputSymbol = Optional.empty();
+		} else {
+			maybeInputSymbol = Optional.of(inputTape.peek());
+		}
+
+		if (maybeInputSymbol.isPresent()) {
+			Set<StateStackSymbolsPair> transitionsConsumingInput = transitionFunction.get(currentState, stackTop,
+					maybeInputSymbol);
+
+			builder.append("𝛿(" + currentState + ", " + maybeInputSymbol.get() + ", " + stackTopRepr + ") = { ");
+			for (StateStackSymbolsPair pair : transitionsConsumingInput) {
+				builder.append("(" + pair.getState() + ", ");
+				if (pair.getSymbols().isEmpty()) {
+					builder.append(Word.EMPTY_STRING_REPR + " ");
+				}
+				for (StackAlphabetSymbol stackSymbol : pair.getSymbols()) {
+					builder.append(stackSymbol + " ");
+				}
+				builder.deleteCharAt(builder.length() - 1);
+				builder.append("),");
+			}
+			builder.deleteCharAt(builder.length() - 1);
+			builder.append(" }\t");
+		}
+
+		Set<StateStackSymbolsPair> emptyMoves = transitionFunction.getEpsilonMoves(currentState, stackTop);
+		builder.append("𝛿(" + currentState + ", " + Word.EMPTY_STRING_REPR + ", " + stackTopRepr + ") = { ");
+		for (StateStackSymbolsPair pair : emptyMoves) {
+			builder.append("(" + pair.getState() + ", ");
+			if (pair.getSymbols().isEmpty()) {
+				builder.append(Word.EMPTY_STRING_REPR + " ");
+			}
+			for (StackAlphabetSymbol stackSymbol : pair.getSymbols()) {
+				builder.append(stackSymbol + " ");
+			}
+			builder.deleteCharAt(builder.length() - 1);
+			builder.append("),");
+		}
+		builder.deleteCharAt(builder.length() - 1);
+		builder.append(" } ");
+
+		return builder.toString();
 	}
 
 }

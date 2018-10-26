@@ -53,8 +53,21 @@ public class TransitionFunction {
 	}
 
 	/** Alias for get(currentState, stackTop, Optional.empty()) */
-	public Set<StateStackSymbolsPair> getEpsilonMove(State currentState, StackAlphabetSymbol stackTop) {
+	public Set<StateStackSymbolsPair> getEpsilonMoves(State currentState, StackAlphabetSymbol stackTop) {
 		return get(currentState, stackTop, Optional.empty());
+	}
+
+	/** Returns the union of the results of get and getEpsilonMoves */
+	public Set<StateStackSymbolsPair> getAllTransitions(State currentState, StackAlphabetSymbol stackTop,
+			Optional<InputAlphabetSymbol> inputSymbol) {
+		Set<StateStackSymbolsPair> transitionsWithInput = get(currentState, stackTop, Optional.empty());
+		Set<StateStackSymbolsPair> epsilonMoves = getEpsilonMoves(currentState, stackTop);
+
+		Set<StateStackSymbolsPair> union = new HashSet<>();
+		union.addAll(transitionsWithInput);
+		union.addAll(epsilonMoves);
+
+		return union;
 	}
 
 	/**

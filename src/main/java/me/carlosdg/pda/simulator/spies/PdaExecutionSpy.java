@@ -15,5 +15,5 @@ public interface PdaExecutionSpy {
 	public void pathFinished(boolean accepted);
 
 	/** Called when a new iteration is going to be run */
-	public void newIteration(State currentState, InputTape inputTape, PdaStack stack);
+	public void newIteration(State currentState, InputTape inputTape, PdaStack stack, String transitionRepresentation);
 }

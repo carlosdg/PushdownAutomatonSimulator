@@ -37,20 +37,30 @@ public class InputTape {
 	}
 
 	/**
-	 * Returns the next symbol from the tape. Throws if there are no more symbols to
-	 * be read
+	 * Returns the next symbol from the tape but it doesn't consume it. Throws if
+	 * there are no more symbols to be read
 	 */
-	public InputAlphabetSymbol nextSymbol() throws IndexOutOfBoundsException {
+	public InputAlphabetSymbol peek() throws IndexOutOfBoundsException {
 		if (currentSymbolIndex >= word.size()) {
 			throw new IndexOutOfBoundsException("There are no more symbols in the input string");
 		}
 		InputAlphabetSymbol symbol = word.get(currentSymbolIndex);
+
+		return symbol;
+	}
+
+	/**
+	 * Returns the next symbol from the tape. Throws if there are no more symbols to
+	 * be read
+	 */
+	public InputAlphabetSymbol consumeInput() throws IndexOutOfBoundsException {
+		InputAlphabetSymbol symbol = peek();
 		currentSymbolIndex += 1;
 
 		return symbol;
 	}
 
-	public void revertNextSymbol() {
+	public void revertConsumption() {
 		if (currentSymbolIndex <= 0) {
 			throw new IndexOutOfBoundsException("There are no more symbols in the input string");
 		}
@@ -58,7 +68,7 @@ public class InputTape {
 	}
 
 	/** Returns whether all the input symbols have been read or not */
-	public boolean empty() {
+	public boolean isEmpty() {
 		return currentSymbolIndex >= word.size();
 	}
 

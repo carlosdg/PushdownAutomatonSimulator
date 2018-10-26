@@ -13,14 +13,12 @@ public class PdaExecutionConsoleLogger implements PdaExecutionSpy {
 
 	@Override
 	public void pathFinished(boolean accepted) {
-		if (!accepted) {
-			System.out.println("~~");
-		}
+		System.out.println("~~~");
 	}
 
 	@Override
-	public void newIteration(State currentState, InputTape inputTape, PdaStack stack) {
-		System.out.println(currentState + "\t" + inputTape + "\t" + stack);
+	public void newIteration(State currentState, InputTape inputTape, PdaStack stack, String transitionRepresentation) {
+		System.out.println(currentState + "\t" + inputTape + "\t" + stack + "\t" + transitionRepresentation);
 	}
 
 }
