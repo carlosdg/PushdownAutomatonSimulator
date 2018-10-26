@@ -96,3 +96,40 @@ Now, let see how the automaton behaves with three example inputs:
     (p, 101, S) ⊢ (p, 01, A) ⊢ (p, 1, )
     
     When the stack goes empty the input tape is not so the input is rejected 
+
+## Simulator
+
+This is a simulator of a non deterministic PDA by empty stack. This means that the PDA doesn't use accepting states and that the output of the transition function can be different when given the same input. So to make sure that the PDA accepts a given input word, it has to check all possible paths.
+
+### Run
+```bash
+java -jar PdaSimulator.jar configuration_file input_word_file [0 | 1]
+# 0 for not showing the simulation process 
+# 1 or different than 0 for showing the simulation process.
+```
+
+### Examples
+- Showing the simulation:
+
+```bash
+java -jar PdaSimulator.jar pda_config_examples/APv-jueves.txt pda_config_examples/test.word 1
+```
+```
+p	a a b c 	S 	𝛿(p, a, S) = { (p, A S) }	𝛿(p, ., S) = { }
+p	a b c 	A S 	𝛿(p, a, A) = { (p, A A) }	𝛿(p, ., A) = { }
+p	b c 	A A S 	𝛿(p, b, A) = { (q, A A) }	𝛿(p, ., A) = { }
+q	c 	A A A S 	𝛿(q, c, A) = { (r, .) }	𝛿(q, ., A) = { }
+r		A A S 	𝛿(r, ., A) = { }
+~~~ 
+Accepted: false
+```
+
+- Not showing the simulation:
+
+```
+java -jar PdaSimulator.jar pda_config_examples/APv-jueves.txt pda_config_examples/test.word 0
+```
+
+```
+Accepted: false
+```
